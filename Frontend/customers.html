@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Customers</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="container">
+    <h1 class="text-center">Customer List</h1>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Balance</th>
+        </tr>
+      </thead>
+
+      <tbody id="customerTable"></tbody>
+    </table>
+    <button class="btn btn-success w-100" type="submit" onclick="location.href='transfer.html'">Transfer</button>
+
+  </div>
+
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+  <script>
+  const customerTable = document.getElementById("customerTable");
+
+// Fetching customer data from API
+fetch("http://localhost:3000/api/v1/user")
+  .then(response => response.json())
+  .then(data => {
+    console.log(data); // Add this line to log the response
+
+    // Render the customer table
+    renderCustomerTable(data.users);
+  });
+
+function renderCustomerTable(customers) {
+  // Clear existing rows
+  customerTable.innerHTML = "";
+
+  // Check if customers is an array
+  if (Array.isArray(customers)) {
+    // Generate the table rows
+    const rows = customers.map(customer => {
+      return `<tr>
+                <td>${customer.name}</td>
+                <td>${customer.email}</td>
+                <td>${customer.currentBalance}</td>
+              </tr>`;
+    });
+
+    // Append the table rows to the table body
+    customerTable.innerHTML += rows.join("");
+  }
+}
+
+  </script>
+  
+</body>
+</html>

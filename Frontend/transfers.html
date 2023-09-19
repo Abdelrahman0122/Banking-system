@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>View Transfers</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+  <link rel="stylesheet" href="styles.css">
+
+</head>
+<body>
+  <div class="container">
+    <h1 class="text-center">View Transfers</h1>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>From</th>
+          <th>To</th>
+          <th>Amount</th>
+        </tr>
+      </thead>
+      <tbody id="transferTable"></tbody>
+    </table>
+  </div>
+
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+  <script>
+const transferTable = document.getElementById("transferTable");
+
+// Fetch the transfer data from the API
+fetch("http://localhost:3000/api/v1/transfare/viewAllTransfers")
+  .then(response => response.json())
+  .then(data => {
+    // Clear the existing rows
+    transferTable.innerHTML = "";
+console.log(data)
+    // Generate the table rows
+    const rows = data.allTransfers.map(transfer => {
+      return `<tr>
+              <td>${transfer.sender}</td>
+              <td>${transfer.receiver}</td>
+              <td>${transfer.amount}</td>
+            </tr>`;
+    });
+
+    // Append the table rows to the table body
+    transferTable.innerHTML += rows.join("");
+  })
+  .catch(error => {
+    // Handle the error
+  });
+
+  </script>
+</body>
+</html>
